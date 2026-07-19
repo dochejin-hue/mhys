@@ -45,9 +45,19 @@ def get_gua_wx(yao_list, info):
         if v[2] == yao_list: return v[1]
     return "土"
 
+# --- 新增的字体加载函数 ---
+def get_font(size=20):
+    font_path = "simhei.ttf"
+    if os.path.exists(font_path):
+        return ImageFont.truetype(font_path, size)
+    else:
+        try:
+            return ImageFont.truetype("/usr/share/fonts/truetype/wqy/wqy-microhei.ttc", size)
+        except:
+            return ImageFont.load_default()
+
 def draw_integrated_image(gua_list, yong_range, ti_range, results):
-    # 确保 simhei.ttf 在项目根目录下
-    font = ImageFont.truetype("simhei.ttf", 20)
+    font = get_font(20)  # 使用优化后的字体加载
     img = Image.new('RGB', (650, 400), color='white')
     draw = ImageDraw.Draw(img)
     titles = ["本卦", "互卦", "变卦"]
@@ -68,7 +78,6 @@ def draw_integrated_image(gua_list, yong_range, ti_range, results):
 st.set_page_config(page_title="梅花易数排盘")
 st.title("梅花易数排盘系统")
 
-# 自动获取当前时间排盘
 if st.button("使用当前时间起卦"):
     data = get_meihua_data()
     s, x, d = calculate_hexagram(*data["numbers"])
