@@ -47,14 +47,11 @@ def get_gua_wx(yao_list, info):
 
 # --- 新增的字体加载函数 ---
 def get_font(size=20):
-    font_path = "simhei.ttf"
-    if os.path.exists(font_path):
-        return ImageFont.truetype(font_path, size)
-    else:
-        try:
-            return ImageFont.truetype("/usr/share/fonts/truetype/wqy/wqy-microhei.ttc", size)
-        except:
-            return ImageFont.load_default()
+    # 直接使用默认字体，不再尝试加载 simhei.ttf，彻底避开 OSError
+    try:
+        return ImageFont.load_default()
+    except:
+        return None
 
 def draw_integrated_image(gua_list, yong_range, ti_range, results):
     font = get_font(20)  # 使用优化后的字体加载
